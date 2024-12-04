@@ -5,7 +5,6 @@ with open(abspath(join(dirname(__file__), 'input.txt')), 'r') as f:
     data = f.read().splitlines()
 
 chars = ['X','M','A','S']
-
 directions = ((-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0))
 
 def traverse(data, x, y, direction, char_index):
@@ -22,13 +21,22 @@ def traverse(data, x, y, direction, char_index):
     
     return traverse(data, x, y, direction, char_index+1)
 
+def check_diagonals(data, x, y):
+    try:
+        top_left_bottom_right = (data[x-1][y-1] == 'M' and data[x+1][y+1] == 'S') or (data[x-1][y-1] == 'S' and data[x+1][y+1] == 'M')
+        bottom_left_top_right = (data[x+1][y-1] == 'M' and data[x-1][y+1] == 'S') or (data[x+1][y-1] == 'S' and data[x-1][y+1] == 'M')
+        if top_left_bottom_right and bottom_left_top_right:
+            return 1        
+    except:
+        return 0   
+    return 0
+
 def part1(input):    
     result = 0
 
     for row, i  in enumerate(data):
         for col, _  in enumerate(i):
-            if input[row][col] == chars[0]:
-                print("first", row, col)
+            if input[row][col] == chars[0]:                
                 for direction in directions:                    
                     result += traverse(input, row, col, direction, 1)
 
@@ -36,6 +44,12 @@ def part1(input):
 
 def part2(input):
     result = 0
+
+    for row, i  in enumerate(data):
+        for col, _  in enumerate(i):
+            if input[row][col] == 'A':
+                result += check_diagonals(input, row, col)
+
     return result
 
 print(part1(data))
