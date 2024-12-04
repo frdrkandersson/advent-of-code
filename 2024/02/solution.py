@@ -20,12 +20,12 @@ def analyze(input, tolerate):
 
     for report in input:
         levels = [int(x) for x in report.split()]
-        safe = analyze_report(levels, tolerate)
+        safe = analyze_report(levels)
         if not safe and tolerate:
              for i, _ in enumerate(levels):
                 newList = list(levels)
                 del newList[i]      
-                safe = analyze_report(newList, tolerate)
+                safe = analyze_report(newList)
                 if safe:
                      break                                                          
                 
